@@ -1,0 +1,83 @@
+%% acronyms in index
+\def\ixML{Machine learning (ML)}
+\def\ixSVM{Support Vector Machine (SVM)} 
+\def\ixLDA{Linear Discriminant Analysis (LDA)}
+\def\ixPCA{Principal Component Analysis (PCA)}
+\def\ixRF{Random Forest (RF)}
+\def\ixET{Extra Trees (ET)}
+\def\ixGBDT{Gradient Boosting Decision Tree (GBDT)}
+
+\def\ixHP{Hyper-Parameters (HP)}
+\def\ixHPO{Hyper-parameter optimization (HPO)}
+\def\ixANN{Artificial Neural Networks (ANN)}
+\def\ixNAS{Neural Architecture Search (NAS)}
+\def\ixAutoML{Automated Machine Learning (AutoML)}
+\def\ixCMAES{Covariance Matrix Adaptation - Evolution Strategy (CMA-ES)}
+\def\ixGP{Gaussian Process (GP)}
+\def\ixPBT{Population Based Training (PBT)}
+
+\def\ixBO{Bayesian Optimization (BO)}
+\def\ixSMBO{Sequential Model-Based Optimization (SMBO)}
+\def\ixTPE{Tree Parzen Estimator (TPE)}
+\def\ixEI{Expected Improvement (EI)}
+
+\def\ixXAI{eXplainable Artificial Intelligence (XAI)}
+\def\ixCBR{Case-Based Reasoning (CBR)}
+\def\ixEDA{Exploratory Data Analysis (EDA)}
+\def\ixPDP{Partial Dependence Plots (PDPs)}
+\def\ixICE{Individual Conditional Expectation (ICE)}
+\def\ixALE{Accumulated Local Effects (ALE)}
+\def\ixLIME{Local Interpretable Model-agnostic Explanations (LIME)}
+\def\ixSHAP{SHapley Additive exPlanations (SHAP)}
+\def\ixSCM{Structural Causal Models (SCM)}
+
+\def\ixEEG{Electroencephalography (EEG)}
+
+
+\def\ixSPD{Seizure Predictive Devices (SPDs)}
+
+\def\ixEIB{Excitation-Inhibition Balance (EIB)}
+\def\ixICA{Independent Component Analysis (ICA)}
+\def\ixIC{Independent Component (IC)}
+
+\def\ixSTDP{Spike Timing-Dependent Plasticity (STDP)}
+\def\ixSRM{Spike Response Model (SRM)}
+\def\ixPSP{Post Synaptic Potential (PSP)}
+\def\ixIF{Integrate-and-Fire neuron (IF)}
+\def\ixKL{Kullback Leibler (KL)}
+\def\ixLSM{Liquid State Machine (LSM)}
+
+%% index making logic
+\ifFULL
+    \usepackage{imakeidx}
+    \makeindex[columns=2, title=Alphabetical Index, intoc, options= -s 00Preamble/index.ist]
+
+    %print index parameter, https://tex.stackexchange.com/a/54519/199031
+    \let\oldindex\index
+    % \ifDRAFT
+        %color indexes
+        \renewcommand*{\index}[2][]{%
+          \ifstrempty{#1}{%
+            \textcolor{DarkOrchid!100}{\textsf{#2}}\oldindex{#2}%
+          }{%
+            \textcolor{DarkOrchid!100}{\textsf{#2}}\oldindex{#1}%
+          }%
+        }%
+    % \else
+    %     \renewcommand*{\index}[2][]{%
+    %       \ifstrempty{#2}{%
+    %         \oldindex{#1}%
+    %       }{%
+    %         #2\oldindex{#1}%
+    %       }%
+    %     }
+    % \fi
+\else %color only
+    \renewcommand*{\index}[2][]{%
+          \ifstrempty{#2}{%
+            \textcolor{DarkOrchid!100}{\textsf{#1}}%
+          }{%
+            \textcolor{DarkOrchid!100}{\textsf{#2}}%
+          }%
+        }%
+\fi

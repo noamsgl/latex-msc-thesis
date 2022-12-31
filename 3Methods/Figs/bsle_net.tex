@@ -1,0 +1,46 @@
+% Full Bayesian Seizure Annotation Model
+\begin{figure}[H]
+
+  \tikz{
+
+    % nodes
+     \node[obs] (e) {$e_{t}$};%
+     \node[latent, above=of e, xshift=1cm] (s) {$s_{t}$}; %
+     \factor[above=of s, yshift=0.75cm] {cox} {right:Cox$(\lambda_{\phi_i})$} {} {}; 
+     
+    \node[latent, left=of cox] (phi) {$\phi_i$};
+    \node[obs, below=of s, xshift=1cm] (a) {$a_{t}$};%
+    \node[latent, below=of a] (o) {$o_{t}$}; %
+    \factor[left=of o, xshift=-1cm] {ber} {above:Ber$(p)$} {} {};
+    
+    % gates
+    \gate[] {seen} {(a)} {o};
+    
+    % edges
+     \edge {s} {e, a}
+     \edge {ber} {o}
+    %  \edge {o} {a}
+     \edge {cox} {s}
+     \edge {phi} {cox}
+    
+    % plates
+    
+    \plate[inner sep=10pt] {plate1} {(e)(a)(s)(ber)(o)} {time $t$}; %
+    \plate[inner sep=10pt] {plate2} {(plate1)(cox)(phi)} {subject $i$}; %
+
+    % text
+     \node[text width=6cm, anchor=west, right] at (4,1)
+     {
+       \begin{alignat*}{3}
+        \phi_i & \sim \mathcal{D}_{\phi_i} \quad && \text{// subject-specific params}\\
+        \lambda & _{\phi_i} (t) \gets \text{prior}_{\phi_i} : \Rplus \to \Rplus \quad &&\text{// intensity function}\\
+        s_t & \sim \text{Cox}(\lambda_{\phi_i}) && \text{// stochastic counting process}\\
+        e_t & \mid s_t \sim \mathcal{D}_{E \mid S} && \text{// EEG conditioned on seizure var}\\
+        o_t & \sim \text{Bernoulli}(p) && \text{// was the seizure observed?}\\
+        a_t & \sim s_t \text{ if } o_t \text{ else } 0 && \text{// sample annotation}\\
+       \end{alignat*}
+     };
+   }
+ \Caption{Probabilistically Modeling Seizure Occurrence, EEG signal and Annotations across Time and Subjects}{The nodes represent random variables. The shaded nodes $e$ and $a$ represent the observed variables EEG and Annotations, respectively. The rest are latent variables, which can be inferred with Bayes' theorem. The plates represent levels of hierarchy along which the model is replicated, such as time or subject, and the arrows indicate causal direction.}
+  \label{fig:c3bsle:bsle_net}
+\end{figure}

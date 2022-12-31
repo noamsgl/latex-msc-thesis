@@ -1,0 +1,6 @@
+% \pdfbookmark{Abstract}{Abstract}
+\addchap{Abstract} %instead of chapter, so it won't be numbered
+
+Computationally modeling seizure timing in epilepsy from EEG would allow wearable devices to alert users before a seizure begins. Community focus on pattern recognition methods has achieved encouraging results in discriminating pre-seizure from normal brain function, as represented by EEG feature vectors. However, since seizure labeling is not available at scale, the success of these pattern recognition techniques will be constrained by out-of-budget labels as data grows. 
+
+We propose a Bayesian alternative to classifiers for seizure detection and prediction. It is label efficient and is shown to score 0.88 AUC-ROC with zero labels on a seizure detection task. A weakly supervised version which is biased towards circadian rhythms is shown to improve detection in canines. Our method composes two stages: First, the EEG distribution is modeled and is used to assign novel sequences higher seizure likelihoods. Then, a priori knowledge based on the time covariate is added for supervised improvements.

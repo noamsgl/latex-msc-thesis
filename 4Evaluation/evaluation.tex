@@ -1,0 +1,25 @@
+% =========================
+\chapter{Evaluation}
+\label{ch:4evaluation}
+% =========================
+\NS[inline]{write evaluation chapter}
+
+Proper examination of seizure detection algorithms must account for all types of classification errors and be considerate of the imbalanced nature of the data. It is also essential to be able to benchmark the new algorithm against existing methods. Perhaps above all, it is worthy to evaluate the algorithm's applicability to real-world scenarios. Therefore, we will report a set of standard evaluation metrics and compare our algorithm to select baseline methods.
+
+\section{Research questions}
+
+\NS[inline]{revise research questions}
+
+This thesis addresses the following research questions:
+
+\begin{enumerate}
+    \item How does BSLE compare to itself when using single electrode vs. double electrode EEG segments?
+    \item How does the Gaussian process anomaly detection method compare to the baseline methods?
+\end{enumerate}
+
+
+\section{Evaluation plan}
+In evaluating the anomaly detection method proposed in this work, we will follow the guidelines provided by the Kaggle Seizure Detection Challenge \cite{kaggle2014}. Namely, the model will receive as input the training data from the Dog 1 dataset, and output class probabilities (0 for interictal, 1 for ictal). We will report ROC-curves and ROC-AUC on the held-out test set.
+
+\NS[inline]{report Brier Score}
+\NS[inline]{report Snyder 2008}

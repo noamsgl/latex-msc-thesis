@@ -1,0 +1,79 @@
+% =========================
+\chapter{Conclusion}
+\label{ch:4conclusion}
+% =========================
+The methods shown to work in this thesis are just instances of general approaches to seizure prediction. The pattern recognition approach, presented in chapter \ref{ch:2deterministic}, was selected because of its predominance in the reported literature and its prevalence in top-scoring competition submissions \cite{kaggle2014contests}. The probabilistic inference approach, presented in chapter \ref{ch:3Bsle}, was selected as a less-traveled alternative, which is compared and contrasted to the former approach.
+
+The pattern recognition approach consists of labeling the entire dataset, and then training classifiers to discriminate between preictal and interictal segments. We explore this approach with off-the-shelf classifiers on the Epilepsiae \cite{ihle2012epilepsiae} dataset. To the best of our knowledge, chapter \ref{ch:2deterministic} is the first report to show that simple classifiers and nonlinear feature sets, such as those found in \cite{mirowski2009classification}, work also for noninvasive scalp EEG. The Linear SVM achieved above chance performance on all feature sets, with AUC-ROC scores in the range 0.65-0.96. Although the pattern recognition approach has delivered promising results and found widespread public interest in competitions, it faces limitations which inhibit it's development into practical appliances. One such limitation is the reliance on expert labels, which does not scale feasibly with the amount of EEG data.
+
+
+The research question addressed in the second part of the thesis is, how can we formulate the task of seizure forecasting as a Bayesian inference problem? We answer this by proposing such a formulation, namely the Bayesian Seizure Likelihood Estimator, and evaluate it for both prediction and detection. This formulation utilizes the assumptions that seizures are rare, to identify rare events with a high likelihood for a seizure event, without the need for expert labels. 
+
+The Bayesian framework is general in the sense that each of the likelihood, prior and evidence functions can be estimated independently, and then combined through multiplication. In the BSLE implementation, the likelihood function is constructed as a density-estimation-based novelty detector. We experiment with two options for the prior function: either constant mean seizure-rate values, for a fully unsupervised model, or a cyclical base-rate prior for a weakly supervised model.
+
+We evaluate both types of models on a long-term iEEG recording from a canine with epilepsy. We discover that our method achieves ROC-AUC scores of 0.88 for both the unsupervised and weakly supervised modes after hyper-parameter tuning, and that for all $\alpha$-threshold values lower than 0.06, the weakly supervised model has higher ROC-AUC scores than the unsupervised model. Although this framework is suitable in theory for prediction as well as detection by choice of the horizon parameter, the empirical results (figure \ref{fig:c3bsle:roc_grid}) show that the method's ROC-AUC scores fall down to chance levels for horizons larger than 0.5 seconds.
+
+
+While the uniform prior gives equal seizure probabilities to any block of time, the cyclical prior provides time-varying seizure probabilities. \citet{karoly2017circadian} showed that the circadian seizure histogram improved seizure forecasting in humans. To the best of our knowledge, chapter \ref{ch:3Bsle} is the first report to show that the same prior improves seizure forecasting in canines with epilepsy. This is another ever-so-slight indication that seizures tend to follow cycles, an observation which has been reported many times \cite{karoly2021cycles}.
+
+Although the method we proposed works well for seizure detection, there are some drawbacks. First, the spatial information of the EEG channels is disregarded, and the selection of two channels to embed was made arbitrarily. Further work should utilize better channel selection and modeling the spatio-temporal qualities of the channels for potentially improved results. Second, the preictal data was not distinguishable in the GP-hyperparameter space from the interictal data. This precluded the possibility of using the method for seizure prediction. However, it is likely that different feature extraction methods, such as the ones used in chapter \ref{ch:2deterministic}, will preserve this information and could replace the GP embedding procedure.
+
+We hope that further attempts at seizure likelihood estimation will add to our work within the framework of probabilistic modeling. Future research directions should utilize recent advances in probabilistic programming languages and dynamic Bayesian inference. These methods could allow more complex inference procedures such as inferring subject-specific latent hyperparameters with full uncertainty quantification. In addition, the BSLE model could be extended to multiple levels of hierarchy, for example by modeling multiple subjects together or the same subject at different stages of treatment.
+
+% \section{Evaluation plan}
+% Proper examination of seizure timing algorithms must account for all types of classification errors and be considerate of the imbalanced nature of the data. It is also essential to be able to benchmark the new algorithm against existing methods. Perhaps above all, it is worthy to evaluate the algorithm's applicability to real-world scenarios. Therefore, we will report a set of standard evaluation metrics for both the deterministic and the probabilistic settings, and attempt to replicate the setting proposed in \cite{karoly2017circadian} as much as possible.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \chapter{Discussion}
+% \label{ch:5discussion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \thispagestyle{empty}
+% \vspace*{\fill}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Consider the problem of modeling statistically the interdependencies between real-time EEG signals ($E$) from the epileptic brain, co-occurring seizures events ($S$), and board-approved annotations ($A$), throughout time ($T$).
+
+% Seizures are states of abnormal brain function, which are associated with unwanted symptoms such as involuntary muscle movements (e.g., limb jerking, convulsing), partial or complete loss of consciousness and memory relapses.
+% Epilepsy is a condition in which unprovoked seizures occur recurrently. People suffering from epilepsy may also suffer from side effects such as stress, fear, and sleep disorder. Prolonged seizures are especially dangerous and can lead to sudden death. Moreover, the uncertainty regarding seizure occurrence is regarded as one of the most disturbing factors of the disease. 
+
+% and an external stream of timestamps denoting seizure events, commonly provided by
+
+% It is said that every statistician would turn to Bayes' Theorem when an informative prior is available, but that only a "Bayesian statistician" will attempt to use it to solve any problem, whatsoever \cite{gelman2008objections}. In this work we chose to utilize mainly Bayesian techniques
+
+% \section{Future work}
+
+% Our work introduces a multilevel probabilistic model for dataset annotations (see figure \ref{fig:c3bsle:bsle_net}). The model is inspired by the hypothesis that clinical annotations are very precise but not highly sensitive. That is, we propose to relax the reliance on annotations even further by modeling the notion that a proportion of actual seizures don't become recorded annotation.
+% % explained by the annotator's reliance on video-footage or a lack of clinical symptom manifestations
+
+% \input{3Methods/Figs/bsle_net}
+
+% The model describes, in mathematical terms, the process by which seizure annotations are generated. The $\phi$ parameters control the shape of the individual's prior latent distribution. $\lambda(t)$ is the time-varying seizure base-rate, technically referred to as the intensity function of the Cox process. To account for unannotated seizures, each seizure event $s_t$ is dropped with a probability of $p$. This reflects annotators' missing sections of the EEG recordings, as well as sub-clinical seizures.
+
+% \begin{figure*}[h]
+% \begin{algorithm}[H]
+% \caption{Seizure Annotation Model}
+% \label{alg:ann_model}
+% \begin{algorithmic}
+% \State $k \sim \text{Exp}(1)$
+% \State $\alpha[0,...,23] \gets 1$
+% \State $W[0,...,23] \sim \text{Dir}(\alpha)$
+% \State $\lambda(t) \gets \sum_{i=0}^{23} W[i] \cdot f_{v.M.}(t; i, k)$
+% \State $s_t \sim \text{Cox}(\lambda)$
+% \State $a_t = \text{ZeroInflated}(s_t, p)$
+% \end{algorithmic}
+% \end{algorithm}
+% % https://tex.stackexchange.com/a/460920
+% \caption{A generative model for seizure events and annotations}{More formally, the probability of obtaining an annotation $a_t$ at time $t$ is a zero-inflated seizure occurrence model. Sequentially, in bottom-to-top order, the seizure-occurrence model is a Cox process with a stochastic intensity function $\lambda(t)$. In turn, the intensity function $\lambda(t)$ is a mixture model of 24 von-Mises distributions, one for each hour of the day, in line with \cite{karoly2017circadian}. Finally, the weights $W$ and common spread $k$ parameters assume noninformative (i.e. Dirichlet and Exponential) priors.}
+% \end{figure*}
+
+
+
+
+% \NS[inline]{write about Cox process (a.k.a. Inhomogeneous Poisson processes)}
+
+
+% \NS[inline]{make figure of inferring latent intensity from samples (empirical data}
+
+% \NS[inline]{add posterior predictive W, k plots, simulated seizures.}

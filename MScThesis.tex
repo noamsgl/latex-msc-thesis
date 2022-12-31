@@ -1,0 +1,278 @@
+\RequirePackage{graphicx} 
+%In draft mode, display low-res figures
+%add `draft` parameter, for placeholders of figs
+%https://tex.stackexchange.com/a/74901/199031
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% PRINT conditional
+%%
+
+% black hyperlinks, two-sided page layout with custom headers and footers
+% make sure this flag matches its equivalent in the hebrew cover
+\newif\ifPRINT
+% \PRINTtrue
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Document class:
+%%
+\ifPRINT
+    \def\pagelayoutformat{twoside}
+\else
+    \def\pagelayoutformat{oneside}
+\fi
+\documentclass[a4paper, 12pt, \pagelayoutformat, onecolumn, bibliography=totoc]{scrreprt}
+
+%For the skeleton
+%see https://youtu.be/TQtrFsV3O5c?t=237
+
+% \pdfoutput=1
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Preamble:
+%%
+\input{00Preamble/preamble.tex}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Document:
+%%
+\begin{document}
+% gives the width of the current document in pts
+% \showthe\textwidth
+
+% \ifTODOS
+%     \listoftodos[TODOs]
+% %     \newpage
+%     \cleardoubleoddemptypage
+% \fi
+
+\ifFULL
+    % \pagenumbering{roman} %use roman page numbers
+    \input{01Cover/cover.tex}
+    \thispagestyle{empty} %no pagemark footer here
+
+    \cleardoubleoddemptypage
+%     \blankPageWithoutFooter
+    
+    \input{03Acknowledgement/acknowledgements.tex} 
+    \thispagestyle{empty} %no pagemark footer here
+
+%     \newpage
+%     \blankPageWithoutFooter
+    \cleardoubleoddemptypage
+ 
+    \input{04Dedication/dedication.tex}
+    \thispagestyle{empty} %no pagemark footer here
+    
+    % \newpage
+%     \blankPageWithoutFooter
+    \cleardoubleoddemptypage
+% 
+    \input{05Quote/quote.tex}
+ %  \thispagestyle{empty} %no pagemark footer here
+%    
+    \cleardoubleoddemptypage
+    \setPageStyle
+    \pagestyle{plain.scrheadings}
+    \pagenumbering{roman} %use roman page numbers
+    \input{06Abstract/abstract.tex}
+    
+    % preface
+    % \cleardoubleoddemptypage
+    \cleardoubleoddemptypage
+    \setPageStyle
+    \pagestyle{plain.scrheadings}
+    \addchap{Preface}
+        People who suffer from epilepsy undergo recurring \emph{seizures} - a pervasive synchronous neuronal firing clinically manifested as loss of consciousness or motor control. These episodes are also termed \emph{ictal} episodes. The uncertainty associated with seizure occurrences is deemed to be the leading cause of fear, stress and other comorbidities in patients with epilepsy. Therefore, a reliable method for estimating the likelihood of a near-term seizure is in the interest of epilepsy patients and their caregivers.
+        
+        The field of seizure timing has grown into a branch of science, attracting almost every kind of expert - engineers, physicians and data scientists, to name a few. With this expansion, I feel lucky to have examined two types of approaches to seizure forecasting thoroughly. I hope that the report of my research will make it's way to an interested readership. 
+
+    \medskip
+    \begin {flushright}
+      Noam Siegel \textsc {Be'er Sheva}, Israel, August 2022.
+    \end {flushright}
+
+    \cleardoubleoddemptypage
+    \pdfbookmark{Table of Contents}{toc}
+    \begingroup
+        \hypersetup{hidelinks}   % remove link colors from TOC
+        \tableofcontents
+    \endgroup
+    
+
+    %these lines will remove any page numbers from toc
+    %https://tex.stackexchange.com/a/418828/199031
+%     \addtocontents{toc}{\protect\thispagestyle{empty}}
+%     \pagestyle{empty}
+    
+%     \blankPageWithoutFooter
+    \cleardoubleoddemptypage
+\fi
+
+\ifLINENO
+    \linenumbers
+\fi
+
+
+\thispagestyle{empty}
+\addcontentsline{toc}{chapter}{\listfigurename}
+\listoffigures
+\newpage
+
+\addcontentsline{toc}{chapter}{\listtablename}
+\listoftables
+\newpage
+
+\pagenumbering{arabic} %use arabic page numbers
+%     \setcounter{page}{1} %Mark this as page 1
+    
+\setPageStyle % sets the header and footer templates for each page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 1 - Introduction %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\ifFULL
+    \cleardoubleoddpage
+    \input{c1Introduction/introduction.tex} \newpage
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 2 - Deterministic Seizure Prediction %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\ifFULL
+    \cleardoubleoddpage
+    \input{c2Deterministic/deterministic.tex} \newpage
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 3 - Bsle %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\ifFULL
+    \cleardoubleoddpage
+    \input{c3Bsle/Bsle.tex} \newpage
+\fi
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 4 - Conclusion %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\ifFULL
+    \cleardoubleoddpage
+    \input{c4Conclusion/conclusion.tex} \newpage
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 5 - Discussion  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\ifFULL
+    \cleardoubleoddpage
+    \input{c5Discussion/discussion.tex} \newpage
+\fi
+
+% remove section names from page headers
+\ifPRINT
+    \ihead{}
+\else
+    \rehead{}
+    \rohead{}
+\fi
+
+%% Bibliography:
+%%
+
+\ifBIB
+    \cleardoubleoddpage
+    % \ifDRAFT
+        % \bibliographystyle{apalike} %(author, year) when inline
+%         \bibliographystyle{References/apalike-refs.bst} %(auther, year) with DOI, hyperlinks and many more goodies
+    % \else
+        \bibliographystyle{unsrtnat} %numbers only when inline
+        % \bibliographystyleall{unsrtnat} %numbers only when inline
+    % \fi
+    
+    \bibliography{References/ref}
+    % \bibliographyall{References/ref}
+    % \nocite{*}
+    % \nobibliography{References/myref}
+\fi
+
+
+\begin{appendices}
+        %\bookmarksetupnext{level=0}
+        %\addappheadtotoc
+        
+%         \renewcommand{\thesection}{A.\arabic{section}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 6 - Appendix A  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\cleardoubleoddpage
+\input{6Appendix/appendixc3.tex}
+        
+\end{appendices}
+% %Appendix with no toc page number and no prefix
+% %https://tex.stackexchange.com/a/411021/199031
+% \ifFULL
+%     \ifAPPENDIX
+%         \cleardoubleoddpage
+        
+%     \fi
+% \fi
+
+% \ifLINENO
+%     \nolinenumbers
+% \fi
+
+\pagestyle{plain} %no header, with pagenum
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Index:
+%%
+% \ifFULL
+%     \cleardoubleoddpage
+%     \printindex
+%     % \thispagestyle{empty} %no pagemark footer here
+%     \blankPageWithoutFooter
+% \fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Hebrew cover:
+%%
+\ifFULL
+    \ifHEBCOVER
+        \cleardoubleevenemptypage
+        % \blankPageWithoutFooter
+%         \includepdf[pages=last-1,addtotoc={1,chapternonum,0,Hebrew cover,hebcover}]{Hebrew/hebCover.pdf}
+
+%---------------------------- Reminder including a PDF document to TOC (see macros)
+% includepdf syntax:
+%     addtotoc={⟨page number⟩,⟨section⟩, ⟨level⟩,⟨heading⟩,⟨label⟩}
+%     addtolist={⟨page number⟩,⟨type⟩,⟨heading⟩,⟨label⟩}
+%   \IncludeMyPDF
+%   {1} %  page number to be included
+%   {0.9} % scale
+%   {true} %   landscape = true or false
+%   {false} %  turn = true or false
+%   {subsection,2} % level in TOC: section, subsection, subsubsection + level 1,2,3
+%   {TitleTOC} %  heading for TOC / list 
+%   {Label} %   label: label-toc-#7, label-list-#7, #7-target for hyperlinks
+%   {table} %   addtolist = table or figure
+%   {mindmaps.pdf} %  file
+        % Add the hebrew pages in reverse order, and add the hebrew abstract to ToC
+        \def\hebabstractpage{3}
+        
+        \IncludeMyPDFinReverse
+        {\hebabstractpage}
+        {1}
+        {false}
+        {false}
+        {chapternonum, 1}
+        {Hebrew Abstract}
+        {fig:hebCover}
+        {figure}
+        {Hebrew/hebCover.pdf}
+
+        % \includepdf[pages=last-1, noautoscale, addtotoc={\hebabstractpage, chapternonum, 0, Hebrew Abstract, hebabstract}]{Hebrew/hebCover.pdf}
+        
+        % Add a PDF bookmark to the hebrew cover
+        \bookmark[startatroot, named=LastPage, level=0]{Hebrew Cover}
+    \fi
+\fi
+
+\ifLISTFIGS
+    \listoffigures
+\fi
+
+\end{document}

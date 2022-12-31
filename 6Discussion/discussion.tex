@@ -1,0 +1,24 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Discussion}
+\label{ch:6discussion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \thispagestyle{empty}
+% \vspace*{\fill}
+\epigraph{"The theory of probabilities is at bottom nothing but common sense reduced to calculus"}{---Pierre-Simon Laplace, \textit{Essai Philosophique sur les Probabilités}}
+
+\NS[inline]{rewrite discussion. Points to include: (1) future work on hierarchical patient modeling}
+
+The problem of automatic seizure detection is challenging, inducing many attempts over the years. In this work we attempted a probabilistic approach, relying on Bayes' rule to estimate the likelihood of a seizure given an EEG segment. We assumed that seizures are rare, which led us to a novelty-score-based likelihood. Following recent findings, we also assumed that seizures are approximately cyclical, taking this into account in our prior.
+
+\showthe\textwidth
+
+% It is said that every statistician would turn to Bayes' Theorem when an informative prior is available, but that only a "Bayesian statistician" will attempt to use it to solve any problem, whatsoever \cite{gelman2008objections}. In this work we chose to utilize mainly Bayesian techniques
+
+
+Although the method we proposed works well, there are some drawbacks. First, the channel spatio-temporal location is disregarded, and the pairing (in the double-channel case) was made arbitrarily. Further work should utilize better channel selection and modeling the topographic qualities of the channels for potentially improved results.
+
+Second, the model of normal EEG was fit using the segments from the Canine-epilepsy-dataset which were chosen for the Kaggle challenge. The class distribution differs from the true class distribution. To combat this discrepancy, we dropped the ictal segments and used only the interictal segments for the model of normality. Because ictal EEG is extremely less common than interictal EEG, we assume that using the interictal segments is a sufficiently close approximation of the natural distribution. Further studies should recalibrate the method based on the raw recordings in order to provide an even better estimate.
+
+Thirdly, from the clinical perspective, the evaluation method is limited since the data originates from canines with naturally occurring epilepsy, instead of humans. Dogs with naturally occurring epilepsy show similar semiology to epilepsy in humans, but more work is required to validate this method on human EEG. 
+
+In summary, we present an anomaly detection method based on Gaussian processes embeddings, and evaluate it on a seizure detection task. The method is significant because it is unsupervised, thus eliminated the need for costly annotators.

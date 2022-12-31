@@ -1,0 +1,38 @@
+% =========================
+\appendix
+\chapter{GP embedding: training details}
+\label{apx:GPTraining}
+
+% =========================
+For dimensionality reduction of an observed EEG segment, we performed exact inference of the GP parameters maximizing the observation likelihood, using the GPyTorch and PyTorch Lightning frameworks \shortcites{gardner2018gpytorch} \cite{gardner2018gpytorch, Falcon_PyTorch_Lightning_2019}.
+
+More formally, in fitting the Gaussian processes to the EEG samples we carried out exact Type-II Maximum Likelihood Estimation for each sample. This means optimizing the model's hyperparameters (mean module, covariance module, etc.) w.r.t maximization of the \emph{marginal log likelihood} (MLL) of the given data $\mathbf{E, t}$:
+
+\begin{align}
+    \theta \gets \argmax_\theta p_f(\mathbf{E} \mid \mathbf{t}) = \int p(\mathbf{E} \mid f(\mathbf{t})) p(f(\mathbf{t}) \mid \mathbf{t}) df
+\end{align}
+
+where $f \sim \mathcal{GP}(\mu, K)$ is the modeled signal before adding the homescedastic Gaussian noise, and $\theta$ is the set of parameters to be optimized. See code for implementation details.
+
+\begin{table}[h]
+\begin{tabular}{ |p{3cm}||p{5cm}||p{5cm}| }
+ \hline
+ \multicolumn{3}{|c|}{GP \& inference (training) configuration details} \\
+ \hline
+  &Parameter& Value \\
+ \hline
+\multirow{5}{3cm}{GP params} & mean module & zero mean\\
+&covariance module& scaled Matérn-1.5 kernel\\
+&task covariance rank& 1 \\
+&number of tasks& 2   \\
+&likelihood (noise model)&Gaussian (homoscedastic)\\
+\hline
+\multirow{4}{3cm}{Training params}& optimizer &Adam\\
+&learning rate& 0.01 \\
+&max. number of epochs & 1000\\
+&patience (early stopping)&8 \\
+ \hline
+\end{tabular}
+\caption{The GP parameters and training parameters used in our experiments.}
+\label{table:GPTraining}
+\end{table}

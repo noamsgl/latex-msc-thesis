@@ -1,0 +1,293 @@
+\usepackage{bbm} %for indicator
+\usepackage{bm} %bold math stuff
+
+% #################### CUSTOM COMMANDS ####################
+\newcommand\blankPage{
+\newpage
+\mbox{}
+\newpage
+}
+
+\newcommand\blankPageWithoutFooter{
+\newpage
+\mbox{}
+\thispagestyle{empty} %no pagemark footer here
+\newpage
+}
+
+\newcommand\blankPageWithoutHeader{
+\newpage
+\mbox{}
+\thispagestyle{plain} %no header
+\newpage
+}
+
+\newcommand\setPageStyle{
+\pagestyle{scrheadings} %custom header/footer
+
+\ifPRINT
+    \ohead{\leftmark}
+    \chead{}
+    \ihead{\rightmark}
+    \ofoot[\pagemark]{\pagemark}
+    \cfoot[]{}
+    \ifoot[]{}
+\else
+    \lohead{\leftmark}
+    \cohead{}
+    \rohead{\rightmark}
+    \lehead{\leftmark}
+    \cehead{}
+    \rehead{\rightmark}
+    \refoot[\pagemark]{\pagemark}
+    \cefoot[]{}
+    \lefoot[]{}
+    \rofoot[\pagemark]{\pagemark}
+    \cofoot[]{}
+    \lofoot[]{}
+\fi
+\automark[section]{chapter}
+}
+
+% #################### abbreviations ####################
+
+ %--------------------------------------------
+% Add a period to the end of an abbreviation unless there's one
+% already, then \xspace.
+% \DeclareRobustCommand\onedot{\futurelet\@let@token\@onedot}
+% \def\@onedot{\ifx\@let@token.\else.\null\fi\xspace}
+% \def\@onedot{\xspace}
+
+\def\eg{\emph{e.g.}~}  %for example, such as
+\def\ie{\emph{i.e.,~}} %in other words
+% \def\cf{\emph{cf.}~} \def\Cf{\emph{Cf.}~}
+\def\etc{\emph{etc.}~} \def\vs{\emph{vs.}~}
+\def\wrt{w.r.t.~} 
+% \def\wrt{with respect to }  % The extra space at the end means \wrt blah would 
+% not end up as ``with respect toblah''. 
+\def\aka{a.k.a.~} 
+
+% \def\dof{d.o.f.~}
+% \def\etal{\emph{et al.}~}
+\def\etal{\emph{et al.}~}
+% \def\etal{\emph{et al.}~}
+%
+\def\iid{\emph{i.i.d.}~}
+% \def\pdf{\emph{p.d.f.}~}
+
+\def\rhs{r.h.s.~}
+\def\lhs{l.h.s.~}
+
+\newcommand{\supth}{\ensuremath{^{\text{th}}}} %\th was already occupied, usage: e.g. for k^th
+
+%--------------------------------------------------
+\def\naive{naïve~}
+\def\Naive{Naïve~}
+% TODO: add Matern
+
+% \newcommand{\FIG}{Fig.~}
+% \newcommand{\FIGS}{Figs.~}
+% \newcommand{\EQN}{Eq.~}
+% % \newcommand{\EQN}{Equation }
+% \newcommand{\EQNS}{Eqs.~}
+% \newcommand{\EQNS}{Equations }
+
+%\newcommand{\SEC}{Sec.~}.  Use \autoref or ~\autoref instead.
+
+% #################### Math convenience ####################
+
+%https://tex.stackexchange.com/a/5255/199031
+% \DeclareMathOperator*{\argmax}{arg\,max}
+% \DeclareMathOperator*{\argmin}{arg\,min}
+
+%About \ensuremath{#1}:
+% The aim of it to allow #1 to be used in math mode and outside.
+% yet, as we can see in this link, there sometimes may be problems with spacing when outside of mathmode.
+% My take is use it only when you have a single letter, \ie \newcommand{\ZZ}{\ensuremath{\mathbb{Z}}}
+% ans sparingly in other cases
+%https://tex.stackexchange.com/questions/34830/when-not-to-use-ensuremath-for-math-macro
+
+% probability
+\newcommand{\given}{\ensuremath{\;\middle\vert\;}} %has to be inside \left \right
+\newcommand{\prob}{\mathbb{P}}
+% integers
+\newcommand{\ZZ}{\ensuremath{\mathbb{Z}}}
+\newcommand{\RR}{\ensuremath{\mathbb{R}}}
+% \newcommand{\Rtwo}{\ensuremath{\RR^2}}
+% \newcommand{\Rthree}{\ensuremath{\RR^3}}
+% \newcommand{\Rsix}{\ensuremath{\RR^6}}
+\newcommand{\Rn}{\ensuremath{\RR^n}}
+\newcommand{\Rd}{\ensuremath{\RR^d}}
+\newcommand{\Rk}{\ensuremath{\RR^k}}
+
+%positive integers
+\newcommand{\Zplus}{\ensuremath{\ZZ^+}}
+%positive reals
+\newcommand{\Rplus}{\ensuremath{\RR^+}}
+
+% set notation
+% \newcommand{\set}[1]{\ensuremath{{\left\{#1\right\}}}}
+\newcommand{\set}[1]{\ensuremath{{\{#1\}}}}
+\newcommand{\tuple}[1]{\ensuremath{{(#1)}}}
+\newcommand{\tupleLarge}[1]{\ensuremath{{\left(#1\right)}}}
+% \newcommand{\argmin}[1]{\ensuremath{\operatorname*{arg\;min}_{#1}}}
+% \newcommand{\argmax}[1]{\ensuremath{\operatorname*{arg\;max}_{#1}}}
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\argmax}{argmax}
+
+%Binary vector operators
+\newcommand{\InnerProduct}[2]{\left\langle #1,#2 \right\rangle}
+\newcommand{\CrossProduct}[2]{#1\times#2}
+
+% Norms
+% \newcommand{\norm}[1]{{{\left\|#1\right\|}}}
+\newcommand{\sign}[1]{{\mathrm{sign}\left(#1\right)}}
+\newcommand{\ellTwo}{\ell_2}
+\newcommand{\ellTwoNorm}[1]{\norm{#1}_{\ellTwo}}
+\newcommand{\ellOne}{\ell_1}
+\newcommand{\ellOneNorm}[1]{\norm{#1}_{\ellOne}}
+
+%def equiv sign
+\newcommand{\defeq}{\ensuremath{\equiv}}
+
+\newcommand{\MATRIX}[2][cccccccccccccccccccc]{\left[
+ \begin{array}{#1}
+ #2
+ \end{array}
+\right]}
+
+% In python: print_iterable(['\\bmdefine\\b{0}'.format(x)+'{'+x+'}' for x in 
+% string.ascii_letters])
+
+% VECTORS
+\bmdefine\ba{\mathrm{a}}
+\bmdefine\bb{\mathrm{b}}
+\bmdefine\bc{\mathrm{c}}
+\bmdefine\bd{\mathrm{d}}
+\bmdefine\be{\mathrm{e}}
+% \bmdefine\bf{\mathrm{f}}  # Clashes with a standard command
+\bmdefine\boldf{\mathrm{f}}
+\bmdefine\bg{\mathrm{g}}
+\bmdefine\bh{\mathrm{h}}
+\bmdefine\bi{\mathrm{i}}
+\bmdefine\bj{\mathrm{j}}
+\bmdefine\bk{\mathrm{k}}
+\bmdefine\bl{\mathrm{l}}
+\bmdefine\bm{\mathrm{m}}
+\bmdefine\bn{\mathrm{n}}
+\bmdefine\bo{\mathrm{o}}
+\bmdefine\bp{\mathrm{p}}
+\bmdefine\bq{\mathrm{q}}
+\bmdefine\br{\mathrm{r}}
+\bmdefine\bs{\mathrm{s}}
+\bmdefine\bt{\mathrm{t}}
+\bmdefine\bu{\mathrm{u}}
+\bmdefine\bv{\mathrm{v}}
+\bmdefine\bw{\mathrm{w}}
+\bmdefine\bx{\mathrm{x}}
+\bmdefine\by{\mathrm{y}}
+\bmdefine\bz{\mathrm{z}}
+
+\bmdefine\balpha{\alpha}
+\bmdefine\bbeta{\beta}
+\bmdefine\bgamma{\gamma}
+\bmdefine\bdelta{\delta}
+\bmdefine\blambda{\lambda}
+\bmdefine\btheta{\theta}
+\bmdefine\bphi{\phi}
+\bmdefine\bvarphi{\varphi}
+\bmdefine\bxi{\xi}
+\bmdefine\bzeta{\zeta}
+\bmdefine\boldeta{\eta}
+\bmdefine\bpi{\pi}
+\bmdefine\bnu{\nu}
+\bmdefine\bmu{\mu}
+\bmdefine\brho{\rho}
+\bmdefine\bomega{\omega}
+\bmdefine\bOmega{\ensuremath{\Omega}}
+\bmdefine\bvarepsilon{\varepsilon}
+\bmdefine\bDelta{\ensuremath{\Delta}}
+\bmdefine\bTheta{\ensuremath{\Theta}}
+\bmdefine\bSigma{\ensuremath{\Sigma}}
+\bmdefine\bPsi{\ensuremath{\Psi}}
+\bmdefine\bLambda{\ensuremath{\Lambda}}
+\bmdefine\bzero{0}
+\bmdefine\bone{1}
+\bmdefine\binfty{\infty}
+
+\newcommand{\indicator}{\mathbbm{1}}
+
+
+% In python 
+% print_iterable(['\\newcommand{\\'+'{0}cal'.format(x)+'}{\\mathcal{'+x+'}}' 
+% for x in string.ascii_uppercase])
+\newcommand{\Acal}{\mathcal{A}}
+\newcommand{\Bcal}{\mathcal{B}}
+\newcommand{\Ccal}{\mathcal{C}}
+\newcommand{\Dcal}{\mathcal{D}}
+\newcommand{\Ecal}{\mathcal{E}}
+\newcommand{\Fcal}{\mathcal{F}}
+\newcommand{\Gcal}{\mathcal{G}}
+\newcommand{\Hcal}{\mathcal{H}}
+\newcommand{\Ical}{\mathcal{I}}
+\newcommand{\Jcal}{\mathcal{J}}
+\newcommand{\Kcal}{\mathcal{K}}
+\newcommand{\Lcal}{\mathcal{L}}
+\newcommand{\Mcal}{\mathcal{M}}
+\newcommand{\Ncal}{\mathcal{N}}
+\newcommand{\Ocal}{\mathcal{O}}
+\newcommand{\Pcal}{\mathcal{P}}
+\newcommand{\Qcal}{\mathcal{Q}}
+\newcommand{\Rcal}{\mathcal{R}}
+\newcommand{\Scal}{\mathcal{S}}
+\newcommand{\Tcal}{\mathcal{T}}
+\newcommand{\Ucal}{\mathcal{U}}
+\newcommand{\Vcal}{\mathcal{V}}
+\newcommand{\Wcal}{\mathcal{W}}
+\newcommand{\Xcal}{\mathcal{X}}
+\newcommand{\Ycal}{\mathcal{Y}}
+\newcommand{\Zcal}{\mathcal{Z}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% MSc operators %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\DeclareMathOperator{\E}{\mathbb{E}} %used in gaussian processes
+\newcommand{\Seiz}{\ensuremath{\mathbb{S}}}
+\newcommand{\EEG}{\ensuremath{\mathbb{E}}}
+\newcommand{\Seizt}{\ensuremath{\mathbb{S}_t}}
+\newcommand{\EEGt}{\ensuremath{\mathbb{E}_t}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Add to PDF to TOC %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% https://tex.stackexchange.com/a/88101
+%   
+%---------------------------- begin macro for including a PDF document
+% includepdf syntax:
+%     addtotoc={⟨page number⟩,⟨section⟩, ⟨level⟩,⟨heading⟩,⟨label⟩}
+%     addtolist={⟨page number⟩,⟨type⟩,⟨heading⟩,⟨label⟩}
+%   \IncludeMyPDF
+%   {1} %  page number to be included
+%   {0.9} % scale
+%   {true} %   landscape = true or false
+%   {false} %  turn = true or false
+%   {subsection,2} % level in TOC: section, subsection, subsubsection + level 1,2,3
+%   {TitleTOC} %  heading for TOC / list 
+%   {Label} %   label: label-toc-#7, label-list-#7, #7-target for hyperlinks
+%   {table} %   addtolist = table or figure
+%   {mindmaps.pdf} %  file
+
+\newcommand{\IncludeMyPDF}[9]{%
+\newpage\hypertarget{#7-target}
+{\includepdf[pages={#1},nup=1x1,
+    scale=#2,landscape=#3,turn=#4,
+    pagecommand={\thispagestyle{empty}},
+    addtotoc={#1,#5,#6,label-toc-#7},
+    addtolist={#1,#8,#6,label-list-#7}]
+{#9}}}
+
+\newcommand{\IncludeMyPDFinReverse}[9]{%
+\newpage\hypertarget{#7-target}
+{\includepdf[pages={#1},nup=1x1,
+    scale=#2,landscape=#3,turn=#4,
+    pagecommand={\thispagestyle{empty}},
+    addtotoc={#1,#5,#6,label-toc-#7},
+    addtolist={#1,#8,#6,label-list-#7},
+    pages=last-1]
+{#9}}}

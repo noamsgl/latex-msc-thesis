@@ -1,0 +1,26 @@
+\begin{definition}[Circular Gaussian Distribution]
+    % $$ \hat{y}_{t+\tau} = f(e_{t-k:t}, a_{0:t})$$
+    \begin{align}
+    f(x | \mu, \kappa ; \omega) = \frac{\exp (\kappa \cos (\omega (x - \mu)))}{2 \pi I_0(\kappa)}
+    \label{eq:2background:vm_density}
+\end{align}
+
+In this work, we set $\omega \gets \frac{2\pi}{24}$ to scale the period to 24-hours, and drop it from the notation for brevity in the following text.
+
+% \begin{figure}
+%     \centering
+%     \includegraphics{c3Bsle/Figs/model/vm_and_circadian_profile.pdf}
+%     \caption{Caption}
+%     \label{fig:my_label}
+% \end{figure}
+\label{def:circ_gaussian}
+\end{definition}
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics{c3Bsle/Figs/model/vm_and_circadian_profile.pdf}
+    \Caption{Circular Gaussian (von Mises) distribution and circadian profile}{
+The circular Gaussian distribution is similar to a bell-shaped normal distribution on a circle (left).\\A mixture of von Mises distributions represents the cyclical seizure base-rate behavior, termed \emph{circadian profile} (right).}
+    \label{fig:c3bsle:vm}
+\end{figure}

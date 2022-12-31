@@ -1,0 +1,518 @@
+% #################### ENCODING ####################
+\usepackage[utf8x]{inputenc} %allow characters beyond ASCII, such as naïve and angled brackets
+\usepackage[T1]{fontenc} %change font encoding to T1
+%\usepackage[USenglish]{babel} %We don't need babel when we have english only
+
+% textcomp package and marvosym package for additional characters
+\usepackage{textcomp,marvosym}
+
+% #################### FONT ####################
+\usepackage[lining]{ebgaramond} %artistic font, uses more readable numbers
+%took this from the Harvard template: https://github.com/suchow/Dissertate
+
+\usepackage[normalem]{ulem}
+% font tricks, ie, strikeout \sout{some text}
+% see http://texdoc.net/texmf-dist/doc/generic/ulem/ulem.pdf
+
+\usepackage[export]{adjustbox} %used in covers for underlining signatures
+
+\usepackage{siunitx}
+% scientific notation,
+% https://tex.stackexchange.com/a/269845
+
+% #################### COMMENTS ####################
+\usepackage{comment} %multi line comment, a comment environment
+
+% #################### DATES ####################
+\usepackage[en-US]{datetime2}
+
+% #################### ALGORITHM ####################
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% #################### GLOBAL THESIS CONFIGURATIONS ####################
+\input{00Preamble/configuration.tex}
+
+% #################### SI Units ####################
+% %https://tex.stackexchange.com/a/2254/199031
+% \usepackage{siunitx}
+% \sisetup{load-configurations = abbreviations, range-phrase = --, range-units=single}
+
+% #################### COLORS ####################
+\usepackage[pdftex,dvipsnames]{xcolor}  % Coloured text etc.
+
+% #################### WATERMARK ####################
+\ifDRAFT 
+    \usepackage{draftwatermark}
+    
+    \SetWatermarkText{\textbf{D R A F T}  \normalsize\today} 
+    \SetWatermarkColor[gray]{0.7}
+    \SetWatermarkFontSize{1cm}
+    \SetWatermarkAngle{90}
+    \SetWatermarkHorCenter{.7cm}
+\fi
+
+% #################### INDEXES ####################
+\usepackage{etoolbox} %ifstrempty
+\input{00Preamble/index.tex}
+
+% #################### APPENDIX ####################
+\usepackage[page,title,titletoc,header]{appendix}
+%TODO:
+%\renewcommand{\appendixpagename}{\appendixname}
+%\renewcommand{\appendixtocname}{\appendixname}
+%\noappendicestocpagenum
+
+% #################### MATH ####################
+% \usepackage{mathpazo} % Use the Palatino font by default
+\usepackage{amsmath,amssymb,amsfonts}
+%amssymb: overleaf warn when using \mathbb
+%amsfonts: convension to import the 3 of them
+
+% Definitions environment
+\usepackage{amsthm}   %error when used with regexpatch
+
+\usepackage{mathtools} %use of middle
+
+\usepackage{physics} %used in brackets
+
+%better math font
+% \usepackage[osf,onlytext]{MinionPro}% use osf in text, lining figures in math
+
+\usepackage[cochineal]{newtxmath}
+% other options as of March 2022
+% libertine
+% libertinus
+% etbb --> ETbb
+% ebgaramond
+% MinionPro
+% minion --> MinionPro
+% cochineal
+% garamondx
+% baskervillef
+% baskerville --> baskervillef
+% Baskerville --> baskervillef
+% BaskervilleF --> baskervillef
+% baskervaldx
+% Baskervaldx --> baskervaldx
+% erewhon
+% Erewhon --> erewhon
+% XCharter
+% xcharter --> XCharter
+% stickstoo --> stickstootext
+% Stickstoo --> stickstootext
+% stix2 --> stickstootext
+% scholax
+% nc --> scholax
+% scholaxf
+% ncf --> scholaxf
+
+% \usepackage{commath} % extra functionalities for differentials, integrals
+% etc (\od, \dif, etc) #FUTURE: ?
+
+%nice fractions
+\usepackage{nicefrac}
+
+% #################### LISTS ####################
+\usepackage{enumitem} %enumeration styling
+%https://www.latex-tutorial.com/tutorials/lists/
+
+ % #################### TABULAR ####################
+ \usepackage{tabu} %better tabular formatting, ex. https://tex.stackexchange.com/a/50337/199031
+ \usepackage{multirow} %multi rows in tables
+
+%  \usepackage{colortbl} %coloring of table rows
+
+
+ % #################### LINE NUMBERS ####################
+\ifLINENO
+    %Line numbers: see https://texblog.org/2012/02/08/adding-line-numbers-to-documents/
+    \usepackage[left,running]{lineno}
+    \renewcommand\linenumberfont{\ttfamily\bfseries\scriptsize}
+    
+    %lineno package loading order: https://tex.stackexchange.com/a/447159/199031
+    
+    %Patch for equations:
+    % https://tex.stackexchange.com/a/443201/199031
+    % [mathlines] option is full of bugs
+    \usepackage{etoolbox} %% <- for \pretocmd and \apptocmd
+    \makeatletter %% <- make @ usable in macro names
+    \newcommand*\linenomathpatch{\@ifstar{\linenomathpatch@AMS}{\linenomathpatch@}}
+    \newcommand*\linenomathpatch@[1]{
+      \expandafter\pretocmd\csname #1\endcsname {\linenomathWithnumbers}{}{}
+      \expandafter\pretocmd\csname #1*\endcsname{\linenomathWithnumbers}{}{}
+      \expandafter\apptocmd\csname end#1\endcsname {\endlinenomath}{}{}
+      \expandafter\apptocmd\csname end#1*\endcsname{\endlinenomath}{}{}
+    }
+    \newcommand*\linenomathpatch@AMS[1]{
+      \expandafter\pretocmd\csname #1\endcsname {\linenomathWithnumbersAMS}{}{}
+      \expandafter\pretocmd\csname #1*\endcsname{\linenomathWithnumbersAMS}{}{}
+      \expandafter\apptocmd\csname end#1\endcsname {\endlinenomath}{}{}
+      \expandafter\apptocmd\csname end#1*\endcsname{\endlinenomath}{}{}
+    }
+    \let\linenomathWithnumbersAMS\linenomathWithnumbers
+    \patchcmd\linenomathWithnumbersAMS{\advance\postdisplaypenalty\linenopenalty}{}{}{}
+    \makeatother %% revert @
+    
+    \linenomathpatch{equation}
+    \linenomathpatch*{align}
+    \linenomathpatch*{subequations}
+\fi
+
+% #################### FIGURES ####################
+% \graphicspath{{./}} %We've decides to use full path from graphics
+
+%In draft mode, display low-res figures
+%https://tex.stackexchange.com/a/74901/199031
+
+\ifDRAFT
+    \DeclareGraphicsExtensions{.png} %use low-res version. - ~10 sec post compilation time
+\else
+    \DeclareGraphicsExtensions{.pdf} %use high-res version
+\fi
+
+% used for trees in 2HOMER chapter
+\usepackage{tikz}
+\usetikzlibrary{bayesnet}
+% \usetikzlibrary{trees}
+
+\usepackage{caption}
+% docs: http://ftp.isu.edu.tw/pub/Unix/CTAN/macros/latex/contrib/caption/caption.pdf
+% for figures: caption label is bold, the caption text normal.
+% justification is RaggedRight (i.e. left aligned)
+% singlelinecheck=off means that the justification setting is used even when the caption is only a single line long.
+% indention: used to alight the text under the label
+\newlength{\floatwidth}
+\setlength{\floatwidth}{0.85\textwidth}
+\captionsetup[figure]{font={footnotesize,sf}, labelfont=bf,justification=justified,singlelinecheck=off,labelsep=space,format=plain,width=\floatwidth}
+
+% Aviv: I do not like the use of subcaptions, and these lines threw a warning about unused caption[sub]. 
+\usepackage{subcaption}
+% \captionsetup[sub]{indention=1pt}
+
+%tables
+\usepackage{tabularx} %more advanced package for tables, allows sizing, see https://www.overleaf.com/learn/latex/tables
+
+\usepackage{booktabs} %allows export from pandas: \toprule, \midrule, \bottomrule
+
+\captionsetup[table]{font={footnotesize,sf}, labelfont=bf,singlelinecheck=off,justification=justified,labelsep=space,format=plain,width=\floatwidth}
+
+\ifCODE
+    %source code
+    \captionsetup[listing]{font={footnotesize,sf}, labelfont=bf,singlelinecheck=off,justification=justified,labelsep=space,format=plain,width=\floatwidth}
+\fi
+
+%we use custom command `Caption`!
+% NOTE: don't put \index[] inside caption #1, we don't know how to handle it currently
+\newcommand*{\Caption}[2]{
+    \caption[#1]{
+        \textbar\, 
+        \textbf{#1.} 
+        #2}
+}
+
+
+% \renewcommand\thesubfigure{\Alph{subfigure}} %subfigures will be numbered (A), (B) instead of (a),(b)
+
+% list of figures customization
+\ifLISTFIGS
+    \usepackage{tocloft}
+    \renewcommand*{\cftfigname}{\figurename\space}
+    \renewcommand*{\cftfigaftersnum}{\textbar~}
+    \renewcommand{\cftfigpresnum}{\cftfigname}
+    \setlength{\cftfigindent}{0pt}
+    \setlength{\cftfignumwidth}{\widthof{\cftfigname 0.00\textbar~}}
+\fi
+
+\ifCODE
+% #################### CODE FORMATTING ####################
+    %FUTURE: using matlab code: https://tex.stackexchange.com/questions/75116/what-can-i-use-to-typeset-matlab-code-in-my-document
+
+    % source code formatting
+    \usepackage[newfloat, %allows caption to be on top
+    chapter, %number by chapter
+    final %color the code even if on draft mode
+    ]{minted} %color the code even if on draft mode
+    \usemintedstyle{perldoc}
+    % see https://pygments.org/demo/#try for demo of styles
+\fi
+
+% #################### IMPORTING PDFS ####################
+\usepackage[final]{pdfpages} %import hebrew pdf later or temporary seizure prediction paper pdf
+
+% #################### Quote Blocks ####################
+% https://tex.stackexchange.com/a/325698/199031
+% \usepackage{etoolbox}
+\usepackage{setspace} % for \onehalfspacing and \singlespacing macros
+\AtBeginEnvironment{quote}{\singlespacing\small}
+% IMPORTANT: has to come before hyperref - otherwise footnotes won't work
+% https://stackoverflow.com/q/52954054
+
+% #################### REFERENCING ####################
+\ifBIB
+    
+    \ifPRINT
+        \newcommand{\linkcolor}{black}
+        \newcommand{\urlcolor}{black}
+        \newcommand{\citecolor}{black}
+    \else
+        \newcommand{\linkcolor}{violet}    % Color normal internal links (e.g. toc, eqrefs)
+        \newcommand{\urlcolor}{blue!75!black}       % Color for linked urls
+        \newcommand{\citecolor}{blue!50!black}      % Color for bibliographical citations in text
+    \fi
+
+    \usepackage{varioref}
+    % \usepackage[bookmarks=true]{hyperref}
+
+    %suggested by aviv, adapts automatic zoom to fit page
+    \usepackage[colorlinks,linktocpage,linktoc=all,pdfstartview=]{hyperref}
+
+    \hypersetup{ %some pdf metadata
+        draft=false, %discard draft mode (render links anyway)
+        pdfauthor = {\thesisAuthor},
+        pdftitle = {\thesisTitle},
+        pdfsubject={\thesisTitle},
+        pdfkeywords={\thesisKeywords},
+        pdfproducer={pdfLaTeX},
+        pdfcreator={pdfLaTeX},
+        bookmarksopen=false, %starts document with all subtrees expanded?
+        bookmarksnumbered=true, %Include section numbers in bookmarks
+        %pdfpagemode = FullScreen, %open in fullscreen (e.g. not thumbnail)
+        % Kile will display a dialog asking whether to allow fullscreen, than if we choose "Yes",
+        %   is will crush!!!
+        %plainpages=true, % FUTURE: do we need this?
+        linktoc=all, %make text (section), page number (page), both (all) or nothing (none)
+        colorlinks = true, %color or boxes (Better for debug)
+        linkcolor=\linkcolor, %Color for normal internal links (e.g. toc, eqrefs), %FUTURE: black
+        citecolor=\citecolor, %Color for bibliographical citations in text
+        urlcolor = \urlcolor, %Color for linked urls
+    }
+    % \usepackage[noabbrev]{cleveref} %noabbrev means display `equation` instead of `eq.`
+    % \usepackage[capitalize]{cleveref} 
+    \usepackage{cleveref}
+    \crefname{figure}{}{}
+
+    % omit () from equations when referencing, https://tex.stackexchange.com/a/373064/199031
+    \creflabelformat{equation}{#2\textup{#1}#3}
+    
+    \let\oldcref\cref %it can be used explicitly
+    \renewcommand{\cref}[1]{\oldcref{#1}} %allows us to customize cref
+    
+%     \AtBeginEnvironment{appendices}{\crefalias{section}{Appendix}}  % Set appendix reference correctly
+    
+    % \usepackage[open,openlevel=0]{bookmark} %custom pdf bookmarks (e.g. Declaration)
+    \usepackage{bookmark}
+\else
+    \renewcommand{\cite}[1]{[\textbf{C?}]} %default behavior: placeholder
+    \renewcommand{\citet}[1]{[\textbf{Ct?}]} %default behavior: placeholder
+    \renewcommand{\ref}[1]{[\textbf{R?}]} %default behavior: placeholder
+    \renewcommand{\cref}[1]{[\textbf{cR?}]} %default behavior: placeholder
+    \renewcommand{\nameref}[1]{[\textbf{nR?}]} %default behavior: placeholder
+    \renewcommand{\oldcref}[1]{[\textbf{oR?}]} %default behavior: placeholder
+\fi
+
+% Theorem environments and such
+% Must be defined AFTER clerveref is loaded
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+% amsthm replacements (https://tex.stackexchange.com/questions/562490/how-to-customize-newtheorem)
+% (I leave those here just in case)
+% \makeatletter
+% \@ifdefinable\Olddefinition{\let\Olddefinition=\definition}%
+% \renewcommand\definition{\@ifnextchar[{\definitionopt}{\Olddefinition\normalfont}}%
+% \newcommand\definitionopt[1][]{\Olddefinition[{#1}]\normalfont}%
+% \makeatother
+% \makeatletter
+% \@ifdefinable\Oldremark{\let\Oldremark=\remark}%
+% \renewcommand\remark{\@ifnextchar[{\remarkopt}{\Oldremark\normalfont}}%
+% \newcommand\remarkopt[1][]{\Oldremark[{#1}]\normalfont}%
+% \makeatother
+% \newenvironment{proof}{\paragraph{\normalfont\fontfamily{cmr}\selectfont\textit{Proof.}\hspace{-0.5em}}}{\hfill$\square$}
+
+%hyperref transforms every \cite to hyperlink
+
+%\usepackage[authoryear,square,longnamesfirst,comma,sort]{natbib}   % Shay's formatting
+\usepackage[numbers,square,comma,sort&compress,elide]{natbib}
+%nice cheatsheet: http://merkel.texture.rocks/Latex/natbib.php
+% \bibliographystyle{plainnat}
+
+% % In-text full references
+% % https://tex.stackexchange.com/questions/93845/suppress-printing-of-only-bibentry-references-with-natbib
+% \usepackage{multibib}
+% \newcites{all}{Bibliography}
+% \usepackage{bibentry}
+% \nobibliography*
+
+% abort line breaks in multiple citations
+
+% this is just for convenience, if it causes problems we can unuse it
+\renewcommand{\cite}{\citep}
+% \renewcommand{\cite}{\citepall}
+
+%breaks long links, not causing hbox warns
+%especially useful when \bibliographystyle{apalike} %First author, year
+% \bibliographystyle{apalike}
+%FUTURE: Will we need it when switching to numerics (\bibliographystyle{unsrt})?
+% \usepackage{breakcites}
+
+% DOI hyperlinks
+\usepackage{doi}
+
+% #################### PHANTOM CHAPTER ####################
+% pantom chapter so that hebrew chapter appears in toc without number
+% https://tex.stackexchange.com/a/314780
+\providecommand{\phantomsection}{}
+
+\makeatletter
+
+\let\l@chapternonum\l@section %chapter
+\newcommand{\@chapternonum}[2][]{\phantomsection\addcontentsline{toc}{chapter}{#1}\edef\@currentlabel{#1}}%
+\newcounter{chapternonum}
+\renewcommand{\thechapternonum}{} %[1]{\chapter{#1}}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PREFACE:
+
+% ===== Define abstract environment =====
+\newcommand{\prefacename}{Preface}
+\newenvironment{preface}{
+    \vspace*{\stretch{2}}
+    {\noindent \bfseries \Huge \prefacename}
+    \begin{center}
+        \phantomsection \addcontentsline{toc}{chapter}{\prefacename} % enable this if you want to put the preface in the table of contents
+        \thispagestyle{plain}
+    \end{center}%
+}
+{\vspace*{\stretch{5}}}
+
+%   signature line
+% https://tex.stackexchange.com/a/48156
+% \newcommand*{\SignatureAndDate}[1]{%
+%     \par\noindent\makebox[4cm]{\hrulefill} \hfill\makebox[4cm]{\hrulefill}%
+%     \par\noindent\makebox[4cm][l]{#1}      \hfill\makebox[4cm][l]{Date:\\dute}%
+% }%
+
+\newcommand*{\SignatureAndDate}[1]{%
+    \par\noindent\makebox[5.5cm]{\hrulefill} \hfill\makebox[2.5cm]{\hrulefill}%
+    \par\noindent\parbox{5.5cm}{#1}      \hfill\makebox[2.5cm][r]{Date}%
+}%
+% #################### PAGE LAYOUT ####################
+
+\usepackage{anysize} % Customize margins
+\ifTODOS
+    %little more on the right for todonotes
+    \marginsize{2cm}{2.2cm}{2cm}{2cm} % Left,right, up, down
+\else
+    \marginsize{2cm}{2cm}{2cm}{2cm}
+\fi
+
+\renewcommand{\baselinestretch}{1} %spacing between lines
+\setlength{\parskip}{.5em} %skip one line between paragraphs
+% \setlength{\parindent}{0em} %no indent at the beginning of a paragraph
+
+% `fancyhdr` not compatible with KOMA-script
+% see https://youtu.be/TQtrFsV3O5c
+\usepackage[headsepline=true, autooneside=false]{scrlayer-scrpage}
+\ifBADBOXES
+    %renders a black-box suffix where a black box warning occurs
+\else
+    \KOMAoptions{draft=false} % disables the draft mode for scrlayer-scrpage, removed buggy rulers
+\fi
+
+%FUTURE: (maybe) before submitting PhD turn this off and see if its beneficial or not
+\usepackage{microtype} %reduces the number of hyphenations, see https://tex.stackexchange.com/q/95608/199031
+
+\usepackage{csquotes} %use enquote{} to fix for english quotes
+
+%quote an epigraph
+\usepackage{epigraph}
+\renewcommand\epigraphflush{center}
+\setlength{\epigraphwidth}{0.75\textwidth}
+\epigraphnoindent
+
+%dedication horizontal alignment
+\usepackage{varwidth}
+
+\interfootnotelinepenalty=10000 %Completely prevent breaking of footnotes across pages, https://tex.stackexchange.com/a/32210/199031
+
+% #################### TODOs ####################
+\usepackage{xargs} % Use more than one optional parameter in a new commands
+
+\ifTODOS
+    %\usepackage{showframe} %allows debugging the margins
+    \setlength {\marginparsep } {2mm}
+    \setlength {\marginparwidth }{2cm} %todonotes warn
+    \usepackage[colorinlistoftodos,prependcaption,textsize=small]{todonotes}
+%     \newcommandx{\OS}[2][2=fancyline]{\todo[linecolor=Gray,backgroundcolor=Gray!25,bordercolor=Gray,#2]{\textsf{\textit{OS}: #1}}}
+%     \newcommandx{\SB}[2][2=fancyline]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#2]{\textsf{\textit{SB}: #1}}}
+    % \newcommandx{\AD}[2][2=fancyline]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#2]{\textsf{\textit{AD}: #1}}}
+%     
+%     \newcommandx{\SBOS}[3][2=fancyline,3=RoyalBlue]{\todo[linecolor=#3,backgroundcolor=#3!25,bordercolor=#3,#2]{\textsf{\textit{SB4OS}: #1}}}
+%     
+%     \newcommandx{\SBOSHIGH}[3][2=fancyline,3=Red]{\todo[linecolor=#3,backgroundcolor=#3!25,bordercolor=#3,#2]{\textsf{\textbf{\textit{SB4OS}: #1}}}}
+%     
+%     \newcommandx{\SBAD}[2][2=fancyline]{\todo[linecolor=Apricot,backgroundcolor=Apricot!25,bordercolor=Apricot,#2]{\textsf{\textit{SB4AD}: #1}}}
+
+    % \newcommandx{\improvement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
+    %2nd parameter: optional [fancyline, inline]
+    %An example of inline comment:
+    %\OS{A comment}[inline]
+
+%     \usepackage{regexpatch}       % already used within the amsthm package, uncomment if necessary
+    \makeatletter
+    \xpatchcmd{\@todo}{\setkeys{todonotes}{#1}}{\setkeys{todonotes}{fancyline,#1}}{}{}
+    \makeatother
+    \tikzset{/tikz/notestyleraw/.append style={text=blue!10!black}}
+    \newcommand{\NS}[2][]{\todo[author=NS, linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum, #1]{#2}}
+    \newcommand{\AD}[2][]{\todo[author=ad, linecolor=Yellow,backgroundcolor=Yellow!25,bordercolor=Yellow, #1]{#2}}
+    \newcommand{\OS}[2][]{\todo[author=OS, linecolor=RoyalBlue,backgroundcolor=RoyalBlue!25,bordercolor=RoyalBlue, #1]{#2}}
+    \newcommand{\DT}[2][]{\todo[author=DT, linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen, #1]{#2}}
+%    \newcommand{\NS}[2][]{\todo[author=NS, linecolor=red,backgroundcolor=red!50,bordercolor=red, #1]{#2}}
+%    \newcommand{\MG}[2][]{\todo[author=MG, linecolor=Rhodamine,backgroundcolor=Rhodamine!50,bordercolor=Rhodamine, #1]{#2}}
+%    \newcommand{\MD}[2][]{\todo[author=MD, linecolor=Emerald,backgroundcolor=Emerald!50,bordercolor=Emerald, #1]{#2}}
+%    \newcommand{\RM}[2][]{\todo[author=RM, linecolor=Gray,backgroundcolor=Gray!25,bordercolor=Gray, #1]{#2}}
+    %An example of inline comment:
+    %\OS[inline]{A comment}
+    
+    % Add progress bars
+    \usepackage[width=\textwidth, heightr=1.5]{progressbar}
+\else
+    %ignore custom todo commands
+    \newcommand{\NS}[2][]{\ignorespaces}
+    \newcommand{\OS}[2][]{\ignorespaces}
+    \newcommand{\DT}[2][]{\ignorespaces}
+%    \newcommand{\NS}[2][]{\ignorespaces}
+%    \newcommand{\MG}[2][]{\ignorespaces}
+%    \newcommand{\MD}[2][]{\ignorespaces}
+%    \newcommand{\RM}[2][]{\ignorespaces}
+\fi
+
+% #################### Supplementary ####################
+\crefname{supfigure}{Supp. fig.}{Supp. figs.}
+\Crefname{supfigure}{Supporting fig.}{Supporting figs.}
+
+% #################### PLACEHOLDERs ####################
+%\usepackage{framed} %using `oframed` environment we can add placeholders when creating the document scaffolding
+
+\usepackage[most]{tcolorbox} %%extends `framed`, better on multi-page
+% https://tex.stackexchange.com/a/184683/199031
+\tcbset{colback=white}
+
+% #################### Empty footnotes ####################
+\newcommand\extrafootertext[1]{%
+    \bgroup
+    \renewcommand\thefootnote{\fnsymbol{footnote}}%
+    \renewcommand\thempfootnote{\fnsymbol{mpfootnote}}%
+    \footnotetext[0]{#1}%
+    \egroup
+}
+
+\input{00Preamble/macros.tex}
+
+% \input{00Preamble/latexdiff.tex}

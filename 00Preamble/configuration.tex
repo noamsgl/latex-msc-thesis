@@ -1,0 +1,72 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% DRAFT conditional
+%%
+\usepackage{ifdraft}
+\newif\ifDRAFT
+
+% on production mode: 
+%  NO lineno, todos, links colors for debugging
+%  Hi-res images
+
+%sync with overleaf/documentclass[draft] mode
+\ifdraft{\DRAFTtrue}{}
+
+% \DRAFTtrue %FUTURE: remove this
+%forcing draft for reading version to committee
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Thesis metadata:
+%%
+\def\thesisTitle{Computational Approaches to Seizure Forecasting}
+\def\thesisAuthor{Noam Siegel}
+\DTMsavedate{submissiondate}{2022-08-31}   % Submission date
+% \DTMsavenow{submissiondate}   % Submission date
+\def\thesisKeywords{Computer Science - Machine Learning;Statistics - Machine Learning;Bayesian;Epilepsy;Seizure Prediction;Weak Supervision}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% conditionals that affect performance
+%%
+\newif\ifFULL
+\FULLtrue %Renders everything (prologue, epilogue, all chapters, indexes) - longer compilation
+
+\newif\ifFINAL
+\FINALtrue %Does not render design-time stuff, e.g. tcolorbox
+
+\newif\ifCODE
+\CODEfalse % minted and listing in homer chapter
+
+\newif\ifHEBCOVER
+\HEBCOVERtrue %Renders the hebrew cover at the end of the phd
+
+\newif\ifAPPENDIX
+% \APPENDIXtrue %Renders appending (only if full is true)
+
+\newif\ifTODOS
+% \ifFINAL
+% \else
+% \fi
+\TODOStrue % shows todo notes
+
+
+\newif\ifLISTFIGS
+\ifFINAL
+\else
+    % \LISTFIGStrue %shows a list of figures in the end, easier debugging
+\fi
+
+\newif\ifLINENO
+% \ifFINAL
+% \else
+% \fi
+% \LINENOtrue %renders line numbers
+
+
+\newif\ifBIB
+\BIBtrue %compiles the bibliography
+
+\newif\ifBADBOXES 
+\ifFINAL
+\else
+    % \BADBOXEStrue %visualize bad-boxes
+\fi
+

@@ -1,0 +1,30 @@
+% partial Bayesian Seizure Annotation Model
+\begin{figure}[htbp]
+
+  \tikz{
+
+    % nodes
+     \node[obs] (e) {$e_{t}$};%
+     \node[latent, above=of e, xshift=1cm] (s) {$s_{t}$}; %
+    \node[obs, below=of s, xshift=1cm] (a) {$a_{t}$};%
+
+    % gates
+
+    % edges
+     \edge {s} {e, a}
+
+    % plates
+    \plate[inner sep=10pt] {plate1} {(e)(a)(s)} {time $t$}; %
+
+    % text
+     \node[text width=6cm, anchor=west, right] at (4,1)
+     {
+       \begin{alignat*}{3}
+        e_t & \mid s_t \sim \mathcal{D}_{E \mid S} && \text{ // EEG embeddings conditioned on seizure variable}\\
+        a_t & \mid s_t \sim \mathcal{D}_{A \mid S} && \text{ // Annotation conditioned on seizure variable}\\
+       \end{alignat*}
+     };
+   }
+ \Caption{Probabilistically Modeling Seizure Occurrence, EEG signal and Annotations across Time}{The nodes represent random variables. The shaded nodes $e$ and $a$ represent the observed variables EEG and Annotations, respectively. The $s$ node represents a latent variable, whose values can be inferred with Bayes' theorem. The }
+  \label{fig:c3bsle:bsle_net_intro}
+\end{figure}
