@@ -137,7 +137,7 @@
 \def\thesisTitle{שיטות חישוביות בחיזוי התקפי אפילפסיה}
 \def\thesisAuthor{נועם סיגל}
 \newcount\submitday \newcount\submitmonth \newcount\submityear
-\submitday=31 \submitmonth=07 \submityear=2022   % Submit date
+\submitday=16 \submitmonth=01 \submityear=2023   % Submit date
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -176,7 +176,7 @@
 \vspace{10mm}
 {\large העבודה נעשתה בהנחיית}\\
 \vspace{2.5mm}
-{\large\textsc{ד"ר אורן שריקי}}\\
+{\large\textsc{פרופ' אורן שריקי}}\\
 \vspace{2.5mm}
 {\large\textsc{וד"ר דוד טולפין}}\\
 \vspace{8mm}
@@ -202,7 +202,68 @@
 \cleardoublepage
 
 
+%%%%%%%%%%%%%%%%%%%% END COVER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{center}
+\vspace*{3mm}
+\rule[0.5ex]{\linewidth}{2pt}\vspace*{-\baselineskip}\vspace*{3.2pt}
+\rule[0.5ex]{\linewidth}{1pt}\\
+[\baselineskip]{\Huge \thesisTitle}\\[3mm]
+\rule[0.5ex]{\linewidth}{1pt}\vspace*{-\baselineskip}\vspace{3.2pt}
+\rule[0.5ex]{\linewidth}{3pt}\\
+\vspace*{5mm}
+{\large \textit{מחקר לשם מילוי חלקי של הדרישות לקבלת תואר\\ 
+"מגיסטר למדעים"
+}}\\ [2mm]
+\vspace{6.5mm}
+{\large מגיש}\\
+\vspace{2.5mm}
+{\large\textsc{\thesisAuthor}}\\
+\vspace{10mm}
+{\large העבודה נעשתה בהנחיית}\\
+\vspace{2.5mm}
+{\large\textsc{פרופ' אורן שריקי}}\\
+\vspace{2.5mm}
+{\large\textsc{וד"ר דוד טולפין}}\\
+\vspace{8mm}
 
+{\large המחלקה למדעי המחשב
+% \textsc{פקולטה כלשהי} %Older yet better: Faculty of Whatever faculty we are in
+}\\
+\vspace{11mm}
+\begin{minipage}{10cm}
+
+\begin{center}
+% ...............................................................   
+% \uline{\quad\hfill\adjustbox{totalheight=2.5\baselineskip,raise=-1.4\baselineskip,lap={0em}{-0.5\width}}{\phantom{\includegraphics{01Cover/Images/signatureOS.png}}}\hfill\quad}
+
+\SignatureAndDate{חתימת המחבר}
+\vspace{1em}
+\SignatureAndDate{אישור המנחה}
+\vspace{1em}
+\SignatureAndDate{אישור מהנחה}
+\vspace{1em}
+\SignatureAndDate{אישור יו''ר ועדת מוסמכים}
+\vspace{1em}
+
+\end{center}
+
+\end{minipage}\\
+\vspace{2.8em}
+{\large
+    \makeatletter
+    \def\@FormatForHebrew#1#2#3{%
+    \HebrewMonthName{#2}{#3}~%
+    \HebrewYearName{#3}}
+    \makeatother
+    \textsc{\hebrewdate{\submitday}{\submitmonth}{\submityear}}
+}\\
+\vspace{1.8em}
+{\large\textsc{באר שבע}}
+\end{center}
+\thispagestyle{empty} %no pagemark footer here
+% \blankPageWithoutFooter
+\cleardoublepage
+%%%%%%%%%%%%%%%%%%%% ABSTRACT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \mbox{} 
 
 \pagestyle{plain}
