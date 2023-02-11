@@ -1,0 +1,280 @@
+%This file must be compiled with LuaLaTeX.
+% All necessary fonts should be installed on windows
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% PRINT conditional
+%%
+
+% black hyperlinks, two-sided page layout with custom headers and footers
+\newif\ifPRINT
+% \PRINTtrue
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Document class:
+%%
+\ifPRINT
+    \def\pagelayoutformat{twoside}
+\else
+    \def\pagelayoutformat{oneside}
+\fi
+\documentclass[12pt,a4paper,\pagelayoutformat,onecolumn]{book}
+
+\usepackage[normalem]{ulem}
+% font tricks, ie, strikeout \sout{some text}
+% see http://texdoc.net/texmf-dist/doc/generic/ulem/ulem.pdf
+
+\usepackage[export]{adjustbox} %used in covers for underlining signatures
+
+\usepackage{pdfpages}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{hebrew}
+\setdefaultlanguage{hebrew}
+% \setmainfont{David CLM Medium}
+% \setmonofont{Miriam Mono CLM Book}
+% \setsansfont{Simple CLM Medium}
+% % \setsansfont{Nachlieli CLM Light}
+% \newfontfamily{\hebrewfont}[ Script=Hebrew,
+%                            BoldFont={David CLM Bold},
+%                            ItalicFont={David CLM Medium Italic},
+%                            BoldItalicFont={David CLM Bold Italic},
+%                            SmallCapsFont={David Libre Medium}
+% %                            SmallCapsFont={Frank Ruehl CLM Medium}
+%                          ]{David CLM Medium}
+\setmainfont{DavidCLM}[
+    Extension       = .otf,
+    Path            = ./Fonts/,
+    UprightFont     = *-Medium,
+    BoldFont        = *-Bold,
+    ItalicFont      = *-MediumItalic,
+    BoldItalicFont  = *-BoldItalic,
+    SmallCapsFont   = DavidLibre-Medium.ttf]
+\setmonofont{MiriamMonoCLM}[
+    Extension       = .ttf,
+    Path            = ./Fonts/,
+    UprightFont     = *-Book,
+    BoldFont        = *-Bold,
+    ItalicFont      = *-BookOblique,
+    BoldItalicFont  = *-BoldOblique]
+\setsansfont{SimpleCLM}[
+    Extension       = .ttf,
+    Path            = ./Fonts/,
+    UprightFont     = *-Medium,
+    BoldFont        = *-Bold,
+    ItalicFont      = *-MediumOblique,
+    BoldItalicFont  = *-BoldOblique]
+\usepackage{enumitem}
+\setlist[itemize,1]{label={\fontfamily{cmr}\fontencoding{T1}\selectfont\textbullet}}
+    
+\usepackage{titlesec}
+\usepackage{graphicx}
+
+\usepackage{tabu} %better tabular formatting, ex. https://tex.stackexchange.com/a/50337/199031
+
+\usepackage{hebrewcal}
+\newcommand{\printdate}[3]{\begingroup \day=#1\relax \month=#2\relax \year=#3\relax \today \endgroup}
+\newcommand{\ToNoDay}{% just month and year
+\hebrewsetreg\HebrewMonthName{\hebrewmonth}{\hebrewday}~\HebrewYearName{\hebrewyear}}
+
+% #################### PAGE LAYOUT ####################
+
+\usepackage{anysize} % Customize margins
+\marginsize{2cm}{2cm}{2cm}{2cm}
+
+\renewcommand{\baselinestretch}{1} %spacing between lines
+\setlength{\parskip}{.5em} %skip one line between paragraphs
+% \setlength{\parindent}{0em} %no indent at the beginning of a paragraph
+
+\usepackage{fancyhdr}
+\fancyhf{} % clear all header and footers
+\renewcommand{\headrulewidth}{0pt} % remove the header rule
+\fancyhf{} % Start with clearing everything in the header and footer
+% Set the right side of the footer to be the page number
+\ifPRINT
+    \fancyfoot[LE,RO]{\thepage}
+\else
+    \fancyfoot[R]{\thepage}
+\fi
+
+% Redefine plain style, which is used for titlepage and chapter beginnings
+% From https://tex.stackexchange.com/a/30230/828
+\fancypagestyle{plain}{%
+    \renewcommand{\headrulewidth}{0pt}%
+    \fancyhf{}%
+    \ifPRINT%
+        \fancyfoot[LE,RO]{\thepage}%
+    \else%
+        \fancyfoot[R]{\thepage}%
+    \fi%
+}
+
+% #################### SIGNATURE LINE ####################
+%\usepackage{showframe}
+
+\newcommand*{\SignatureAndDate}[1]{%
+   \par\noindent\makebox[4cm]{\hrulefill} \hfill\makebox[2.0in]{\hrulefill} % lines
+    \par\noindent\makebox[4cm][l]{#1}      \hfill\makebox[2.0in][l]{תאריך} % text
+}%
+% 	\par\includegraphics{../01Cover/Images/signatureOS_heb}}
+	
+%\adjustbox{totalheight=2.5\baselineskip,raise=-1.4\baselineskip,lap={0em}{-0.5\width}}{\includegraphics{../01Cover/Images/signatureOS_heb}}
+
+\newcommand*{\SignatureImageAndDate}[2]{%
+%    \par\noindent\makebox[4cm][l]{#1} \hfill\makebox[4cm]{\hrulefill} % image
+    \par\noindent\adjustbox{raise=1ex,lap=0em}{\includegraphics{#1} \\
+      \par\noindent\makebox[4cm]{\hrulefill} \hfill\makebox[4cm]{\hrulefill} % lines
+    \par\noindent\makebox[4.2cm][l]{#2}      \hfill\makebox[4.2cm][l]{תאריך} % text
+    
+    }\vspace{1mm}
+
+}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Thesis metadata:
+%%
+\def\thesisTitle{שיטות חישוביות בחיזוי התקפי אפילפסיה}
+\def\thesisAuthor{נועם סיגל}
+\newcount\submitday \newcount\submitmonth \newcount\submityear
+\submitday=16 \submitmonth=01 \submityear=2023   % Submit date
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand\blankPageWithoutFooter{
+\newpage
+\mbox{}
+\thispagestyle{empty} %no pagemark footer here
+\newpage
+}
+
+\thispagestyle{empty}
+
+\titleformat{\chapter}[hang]{\bf\sf\huge}{\thechapter}{2pc}{}
+
+\begin{document}
+
+
+% \pagenumbering{Roman}
+\pagenumbering{gobble}
+
+\begin{center}
+\vspace*{2mm}
+\rule[0.5ex]{\linewidth}{2pt}\vspace*{-\baselineskip}\vspace*{3.2pt}
+\rule[0.5ex]{\linewidth}{1pt}\\
+[\baselineskip]{\Huge \thesisTitle}\\[3mm]
+\rule[0.5ex]{\linewidth}{1pt}\vspace*{-\baselineskip}\vspace{3.2pt}
+\rule[0.5ex]{\linewidth}{2pt}\\
+[9mm]
+{\large \textit{מחקר לשם מילוי חלקי של הדרישות לקבלת תואר\\ 
+"מגיסטר למדעים"
+}}\\ [2mm]
+\vspace{8mm}
+{\large מגיש}\\
+\vspace{2.5mm}
+{\large\textsc{\thesisAuthor}}\\
+\vspace{10mm}
+{\large העבודה נעשתה בהנחיית}\\
+\vspace{2.5mm}
+{\large\textsc{פרופ' אורן שריקי}}\\
+\vspace{2.5mm}
+{\large\textsc{וד"ר דוד טולפין}}\\
+\vspace{8mm}
+
+\includegraphics[scale=0.4]{../01Cover/Images/logoBGU}\\
+\vspace{9mm}
+{\large הוגש למחלקה למדעי המחשב באוניברסיטת בן-גוריון בנגב
+}\\
+\vspace{5em}
+{\large 
+    \makeatletter
+    \def\@FormatForHebrew#1#2#3{%
+    \HebrewMonthName{#2}{#3}~%
+    \HebrewYearName{#3}}
+    \makeatother
+    \textsc{\hebrewdate{\submitday}{\submitmonth}{\submityear}}
+}\\
+\vspace{2em}
+{\large\textsc{באר שבע}}
+\end{center}
+\thispagestyle{empty} %no pagemark footer here
+% \blankPageWithoutFooter
+\cleardoublepage
+
+
+
+%%%%%%%%%%%%%%%%%%%% END COVER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\iffalse  % Commenting out Hebrew signature page
+\begin{center}
+\vspace*{3mm}
+\rule[0.5ex]{\linewidth}{2pt}\vspace*{-\baselineskip}\vspace*{3.2pt}
+\rule[0.5ex]{\linewidth}{1pt}\\
+[\baselineskip]{\Huge \thesisTitle}\\[3mm]
+\rule[0.5ex]{\linewidth}{1pt}\vspace*{-\baselineskip}\vspace{3.2pt}
+\rule[0.5ex]{\linewidth}{3pt}\\
+\vspace*{5mm}
+{\large \textit{מחקר לשם מילוי חלקי של הדרישות לקבלת תואר\\ 
+"מגיסטר למדעים"
+}}\\ [2mm]
+\vspace{6.5mm}
+{\large מגיש}\\
+\vspace{2.5mm}
+{\large\textsc{\thesisAuthor}}\\
+\vspace{10mm}
+{\large העבודה נעשתה בהנחיית}\\
+\vspace{2.5mm}
+{\large\textsc{פרופ' אורן שריקי}}\\
+\vspace{2.5mm}
+{\large\textsc{וד"ר דוד טולפין}}\\
+\vspace{8mm}
+
+{\large המחלקה למדעי המחשב
+% \textsc{פקולטה כלשהי} %Older yet better: Faculty of Whatever faculty we are in
+}\\
+\vspace{11mm}
+\begin{minipage}{10cm}
+
+\begin{center}
+% ...............................................................   
+% \uline{\quad\hfill\adjustbox{totalheight=2.5\baselineskip,raise=-1.4\baselineskip,lap={0em}{-0.5\width}}{\phantom{\includegraphics{01Cover/Images/signatureOS.png}}}\hfill\quad}
+
+\SignatureAndDate{חתימת המחבר}
+\vspace{1em}
+\SignatureAndDate{אישור המנחה}
+\vspace{1em}
+\SignatureAndDate{אישור מהנחה}
+\vspace{1em}
+\SignatureAndDate{אישור יו''ר ועדת מוסמכים}
+\vspace{1em}
+
+\end{center}
+
+\end{minipage}\\
+\vspace{2.8em}
+{\large
+    \makeatletter
+    \def\@FormatForHebrew#1#2#3{%
+    \HebrewMonthName{#2}{#3}~%
+    \HebrewYearName{#3}}
+    \makeatother
+    \textsc{\hebrewdate{\submitday}{\submitmonth}{\submityear}}
+}\\
+\vspace{1.8em}
+{\large\textsc{באר שבע}}
+\end{center}
+\thispagestyle{empty} %no pagemark footer here
+\fi % Commenting out Hebrew signature page
+% \blankPageWithoutFooter
+\cleardoublepage
+%%%%%%%%%%%%%%%%%%%% ABSTRACT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \mbox{} 
+
+\pagestyle{plain}
+\pagenumbering{alph}
+\input{abstract.tex}
+
+% \includepdf[pages=last-1]{abstract.pdf}
+
+\cleardoublepage
+
+\end{document}
